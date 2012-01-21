@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{%block head %}
+<style>
+  div#floor {
+    position: relative;
+  }
+
+  a.room {
+    display:block;
+    position: absolute;
+    border: 2px solid green;
+    width: 20px;
+    height: 20px;
+  }
+
+  a.room > span {
+    display:none;
+  }
+
+  a.room:hover > span {
+    display:block;
+  }
+
+</style>
+{% endblock %}
+
+
+{%block content %}
+
+  <div id="floor">
+    {%for room in rooms %}
+      <a style="top: {{room.mapY}}; left: {{room.mapX}};" class=room href="{{room.url}}" ><span>{{room.name}}</span></a>
+    {% endfor %}
+  <img src="{{imageurl}}">
+  </div>
+
+{% endblock %}

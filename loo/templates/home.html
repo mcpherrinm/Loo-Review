@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% import 'review.html' as reviews %}
+
+{%block content %}
+
+        {{ reviews.review(item) }}
+
+{% endblock %}

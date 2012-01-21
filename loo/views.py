@@ -4,8 +4,13 @@ import models
 import forms
 from loo.database import getsession
 
-
 @app.route('/')
+def home():
+    S = getsession()
+    R = S.query(models.Review).first()
+    return flask.render_template('home.html', item=R)
+
+@app.route('/all')
 def listall():
     S = getsession()
     Rs = S.query(models.Review).all()
@@ -21,6 +26,21 @@ def review():
             shesh.commit()
             return "Success, <a href='../'>back</a>"
     return flask.render_template('submit.html', form=form)
+
+@app.route('/browse/<building>/<floor>')
+def showfloor(building, floor):
+  S = getsession()
+  print floor
+  R = S.query(models.Room).join(models.Floor).filter(models.Floor.name == floor).all()
+  print R
+  rooms = [{'name': str(x),'url': "/room/MC/" + x.name, 'mapY': x.mapy, 'mapX': x.mapx} for x in R]
+  return flask.render_template('floor.html', rooms = rooms, imageurl ="http://csclub.uwaterloo.ca/~mimcpher/loo/maps/images/"+building+"/"+floor+".png")
+
+@app.route('/room/<building>/<room>')
+def show(building, room):
+   S = getsession()
+   R = S.query(models.Review).join(models.Room).filter(models.Room.name == room).all()
+   return flask.render_template('list.html', content = R)
 
 @app.route('/room/new', methods=['GET', 'POST'])
 def room():

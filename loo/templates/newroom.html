@@ -10,8 +10,8 @@ var setfloorpic = function(floor) {
  $(document).ready(function() {
    var floor = $('select#floor option:selected').text();
    setfloorpic(floor);
-   $("input#mapx").attr("hidden", true);
-   $("input#mapy").attr("hidden", true);
+   /*$("input#mapx").attr("hidden", true);
+   $("input#mapy").attr("hidden", true);*/
    $('select#floor').change(function() {
      var floor = ($('select#floor option:selected').text());
      setfloorpic(floor);
@@ -21,8 +21,8 @@ var setfloorpic = function(floor) {
      var y = $(this).offset().top;
      var clickx = event.pageX - x;
      var clicky = event.pageY - y;
-     $('div#mapbox').css('display', 'block').css('left', event.pageX - 10);
-     $('div#mapbox').css('display', 'block').css('top', event.pageY - 10);
+     $('div#mapbox').css('display', 'block').css('left', clickx - 10);
+     $('div#mapbox').css('display', 'block').css('top', clicky - 10);
      console.log(clickx + ", " + clicky);
      $("input#mapx").attr("value", clickx);
      $("input#mapy").attr("value", clicky);
@@ -36,6 +36,10 @@ var setfloorpic = function(floor) {
     height: 20px;
     width: 20px;
     position: absolute;
+    z-index: 500;
+  }
+  div#plancont {
+    position: relative;
   }
 </style>
 {% endblock %}
@@ -48,7 +52,6 @@ var setfloorpic = function(floor) {
 </ul>
 {% endif %}
 
-<div id="mapbox">
 </div>
 
     <form method="POST">
@@ -60,7 +63,10 @@ var setfloorpic = function(floor) {
             {{ gender }} {{gender.label }}
           {%endfor %}
         </p>
-        <img id="plan" />
+        <div id="plancont">
+          <img id="plan" />
+          <div id="mapbox">
+        </div>
         <p>{{form.mapx}}</p>
         <p>{{form.mapy}}</p>
         <p><input value="Add new bathroom" type=submit></p>
