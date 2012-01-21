@@ -1,0 +1,24 @@
+Loo Review
+===========================
+
+This is a website to review toilets, on campus.
+
+Written in Python.
+
+(Design notes follow)
+
+- "art" in stalls (photos of bathroom?)
+- comfort
+- cleanliness
+- isolation / privacy / business
+- toilet count
+- stall size
+- urinal count
+ - effective urinal count
+-lighting (Window?)
+- paper towel
+- hand dryers
+- sink type & count
+- shower
+
+Other notable features? (Couch.)
