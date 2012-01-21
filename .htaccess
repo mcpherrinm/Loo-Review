@@ -1,0 +1,10 @@
+AddHandler cgi-script .cgi
+DirectoryIndex index.cgi
+deny from all
+
+<Files loo>
+deny from all
+</Files>
+<Files env>
+deny from all
+</Files>
