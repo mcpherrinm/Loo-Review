@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source env/bin/activate
+#source env/bin/activate
 
-exec ./run.py
+#exec ./run.py

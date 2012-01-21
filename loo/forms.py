@@ -11,5 +11,6 @@ class AddRoom(Form):
     name  = fields.TextField(u'Room Number', [validators.required(), validators.length(max=20)])
     building = QuerySelectField(query_factory=models.session.query(models.Building).all)
     floor = QuerySelectField(query_factory=models.session.query(models.Floor).all)
+    gender = fields.RadioField(choices= [('Male', 'Male'), ('Female', 'Female'), ('Unisex', 'Unisex')])
     mapx  = fields.IntegerField(validators=[validators.Optional()])
     mapy  = fields.IntegerField(validators=[validators.Optional()])

@@ -22,9 +22,8 @@ def room():
     form = forms.AddRoom(flask.request.form)
     if flask.request.method == "POST":
         if form.validate():
-            theroom = models.Room(form.name.data, form.floor.data,
+            theroom = models.Room(form.name.data, form.gender.data, form.floor.data,
               form.mapx.data, form.mapy.data)
-            models.session.add(theroom)
             models.session.commit()
             return "Valid New Room"
     return flask.render_template('newroom.html', form=form)

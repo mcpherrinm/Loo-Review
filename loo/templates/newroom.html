@@ -1,5 +1,45 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<script>
+var setfloorpic = function(floor) {
+  var url = "http://csclub.uwaterloo.ca/~mimcpher/loo/maps/images/" + floor.replace(",", "/") + ".png";
+  $('img#plan').attr('src', url);
+}
+
+ $(document).ready(function() {
+   var floor = $('select#floor option:selected').text();
+   setfloorpic(floor);
+   $("input#mapx").attr("hidden", true);
+   $("input#mapy").attr("hidden", true);
+   $('select#floor').change(function() {
+     var floor = ($('select#floor option:selected').text());
+     setfloorpic(floor);
+   });
+   $('img#plan').click(function(event) {
+     var x = $(this).offset().left;
+     var y = $(this).offset().top;
+     var clickx = event.pageX - x;
+     var clicky = event.pageY - y;
+     $('div#mapbox').css('display', 'block').css('left', event.pageX - 10);
+     $('div#mapbox').css('display', 'block').css('top', event.pageY - 10);
+     console.log(clickx + ", " + clicky);
+     $("input#mapx").attr("value", clickx);
+     $("input#mapy").attr("value", clicky);
+   });
+ });
+</script>
+<style>
+  div#mapbox {
+    display: none;
+    border: 3px solid green;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -8,12 +48,21 @@
 </ul>
 {% endif %}
 
+<div id="mapbox">
+</div>
+
     <form method="POST">
         <p>{{form.building.label}}: {{form.building}}</p>
         <p>{{form.floor.label}}: {{form.floor}}</p>
         <p>{{form.name.label}}: {{form.name}}</p>
-        <p>{{form.mapx.label}}: {{form.mapx}}</p>
-        <p>{{form.mapy.label}}: {{form.mapy}}</p>
-        <p><input value="Rate This Toilet" type=submit></p>
+        <p>
+          {% for gender in form.gender %}
+            {{ gender }} {{gender.label }}
+          {%endfor %}
+        </p>
+        <img id="plan" />
+        <p>{{form.mapx}}</p>
+        <p>{{form.mapy}}</p>
+        <p><input value="Add new bathroom" type=submit></p>
     </form>
 {% endblock %}

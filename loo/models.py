@@ -1,6 +1,7 @@
 from elixir import *
 
 options_defaults['tables_options'] = dict(mysql_engine="InnoDB")
+options_defaults['mapper_options'] = { 'save_on_init': False }
 
 class Review(Entity):
     """Reviews contain information from reviewers that may differ between reviews,
@@ -22,14 +23,16 @@ class Room(Entity):
     """A Bathroom contains information about it that
     is non-subjective, such as toilet count and facilities"""
     reviews = OneToMany('Review')
-    name = Field(Unicode(20))
+    name = Field(Unicode(30))
+    gender = Field(Enum(u'Male', u'Female', u'Unisex'))
     location = ManyToOne('Floor')
     # Co-ord pair, WRT PDF floor plans, units etc TBD
     mapx = Field(Integer)
     mapy = Field(Integer)
 
-    def __init__(self, name, floor, x, y):
+    def __init__(self, name, gender, floor, x, y):
         self.name = name
+        self.gender = gender
         self.location = floor
         self.mapx = x
         self.mapy = y
@@ -38,7 +41,7 @@ class Room(Entity):
         return "{0} {1}".format(self.location.building.code, self.name)
 
 class Floor(Entity):
-    name = Field(Unicode(6))
+    name = Field(Unicode(10))
     building = ManyToOne('Building')
     rooms = OneToMany('Room')
 
@@ -50,8 +53,8 @@ class Floor(Entity):
         return "{0},{1}".format(self.building.code, self.name)
 
 class Building(Entity):
-    code = Field(Unicode(6), unique=True)
-    name = Field(Unicode(30), unique=True)
+    code = Field(Unicode(10), unique=True)
+    name = Field(Unicode(120), unique=True)
     floors = OneToMany('Floor')
 
     def __init__(self, code, name):
@@ -59,5 +62,5 @@ class Building(Entity):
         self.name = name
 
     def __repr__(self):
-        return '<Building: {0}>'.format(self.code)
+        return '{0} - {1}'.format(self.code, self.name)
 
