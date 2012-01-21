@@ -2,11 +2,12 @@ import flask
 from loo import app
 import models
 import forms
+from loo.database import getsession
+
 
 @app.route('/')
 def listall():
-    return ""
-    #return flask.render_template('list.html', content=models.session.query(models.Review).all())
+    return flask.render_template('list.html', content=getsession().query(models.Review).all())
 
 @app.route('/review', methods=['GET', 'POST'])
 def review():
@@ -14,7 +15,8 @@ def review():
     if flask.request.method == "POST":
         if form.validate():
             thereview = models.Review(form.room.data, form.description.data, form.rank.data)
-            #models.my_session.commit()
+            shesh = getsession.object_session(thereview)
+            shesh.commit()
             return "Success, <a href='../'>back</a>"
     return flask.render_template('submit.html', form=form)
 
@@ -25,7 +27,8 @@ def room():
         if form.validate():
             theroom = models.Room(form.name.data, form.gender.data, form.floor.data,
               form.mapx.data, form.mapy.data)
-            #models.my_session.commit()
+            S = getsession.object_session(theroom)
+            S.commit()
             return "Valid New Room"
     return flask.render_template('newroom.html', form=form)
 

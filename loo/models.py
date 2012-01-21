@@ -1,8 +1,7 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, Unicode, ForeignKey
 
-Base = declarative_base()
+from loo.database import Base
 
 class Building(Base):
     __tablename__ = 'base'
@@ -37,7 +36,7 @@ class Room(Base):
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode)
-    #gender = Field(Enum(u'Male', u'Female', u'Unisex'))
+    gender = Column(Unicode)
     floor_id = Column(Integer, ForeignKey(Floor.id))
     location = relationship(Floor, backref='rooms')
     # Co-ord pair, WRT PDF floor plans, units etc TBD
