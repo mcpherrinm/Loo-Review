@@ -47,7 +47,7 @@ class Floor(Entity):
         self.building = building
 
     def __repr__(self):
-        return "{0} {1}".format(self.building.code, self.name)
+        return "{0},{1}".format(self.building.code, self.name)
 
 class Building(Entity):
     code = Field(Unicode(6), unique=True)
