@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+<ul class="errors">
+    {{ form.errors }}
+</ul>
+{% endif %}
+
+    <form method="POST">
+        <p>
+            <label for="location">{{form.room.label}}</label>
+            {{form.room}}
+        </p>
+        <p>{{form.description.label}}:</p> <p>{{form.description(cols="80", rows="20")}}</p>
+        <p>Rank (1 to 5): {{form.rank}}</p>
+        <p><input value="Rate This Toilet" type=submit></p>
+    </form>
+{% endblock %}

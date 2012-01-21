@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <base href="http://csclub.uwaterloo.ca/~mimcpher/loo/">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <style>
+      @import url("http://www.uwaterloo.ca/css/UWblank.css");
+      @import url("http://www.uwaterloo.ca/css/common_header.css");
+      @import url("http://www.uwaterloo.ca/css/UWwider.css");
+      @import url("http://www.uwaterloo.ca/css/UWhome_v4p1.css");
+      body {
+        background-color: #EEE; 
+        padding: 0px;
+      }
+      div#wrap {
+        background-color: white;
+        height: 100%;
+        border: 1px solid #CCC;
+        border-top: 0;
+      }
+      div#content p {
+        margin: 1em;
+      }
+      div#wordmark h1 a {
+        font-family:  "Gotham", Arial, sans-serif;
+        text-decoration: none; color: black; 
+        border: 1px black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <div id="clfbar">
+          <div id="uw_wordmark">
+            <a href="http://www.uwaterloo.ca">
+              <img src="http://uwaterloo.ca/images/template/uw_wordmark.gif" alt="Link to the University of Waterloo home page" height="40" width="120" />
+            </a>
+          </div><!-- end #uw_wordmark -->
+          <div id="searchbox">
+            <form action="http://search.uwaterloo.ca" method="get" name="search" id="search" title="search" dir="ltr" lang="en" xml:lang="en">
+              <span class="search_note">Search:</span>
+              <input name="searchterm" type="text" id="searchterm" class="google" accesskey="s" tabindex="2" size="28" />
+              <input type="image" id="submit" src="http://uwaterloo.ca/images/template/search_arrow.gif" class="google" tabindex="3" value="Search" alt="Search" />
+              <input name="searchtype" type="hidden" value="google-uwdir-keyword" />
+            </form>
+          </div><!-- end #searchbox -->
+
+        </div><!-- end #clfbar -->
+
+        <div id="wordmark">
+			<h1><a href="/">WATER | LOO REVIEW </a><img src="static/small.png"></h1>
+        </div><!-- end #wordmark -->
+
+      </div><!-- end #header -->
+      <span class="none"><a href="#content">Skip to the content of the web site.</a></span>
+
+      <div id="content" name="content">
+		  {%block content %} {%endblock %}
+      </div><!-- end #content -->
+    </div><!-- end #wrap -->
+  </body>
+</html>
