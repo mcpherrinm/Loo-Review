@@ -7,7 +7,9 @@ from loo.database import getsession
 
 @app.route('/')
 def listall():
-    return flask.render_template('list.html', content=getsession().query(models.Review).all())
+    S = getsession()
+    Rs = S.query(models.Review).all()
+    return flask.render_template('list.html', content=Rs)
 
 @app.route('/review', methods=['GET', 'POST'])
 def review():
