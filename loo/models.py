@@ -1,34 +1,48 @@
-from elixir import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, Unicode, ForeignKey
 
-options_defaults['tables_options'] = dict(mysql_engine="InnoDB")
-options_defaults['mapper_options'] = { 'save_on_init': False }
+Base = declarative_base()
 
-class Review(Entity):
-    """Reviews contain information from reviewers that may differ between reviews,
-    such as cleanliness and comfort
-    For now, a review is a specific room"""
-    room = ManyToOne('Room')
-    description = Field(UnicodeText)
-    rank = Field(Integer)
+class Building(Base):
+    __tablename__ = 'base'
+    id = Column(Integer, primary_key=True)
+    code = Column(Unicode, unique=True)
+    name = Column(Unicode, unique=True)
 
-    def __init__(self, room, description, rank):
-        self.room = room
-        self.description = description
-        self.rank = rank
+    def __init__(self, code, name):
+        self.code = code
+        self.name = name
 
     def __repr__(self):
-        return '<Review of {0}>'.format(self.room)
+        return '{0} - {1}'.format(self.code, self.name)
 
-class Room(Entity):
+class Floor(Base):
+    __tablename__ = 'floor'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode)
+    building_id= Column(Integer, ForeignKey(Building.id))
+    building = relationship(Building, backref='floors')
+
+    def __init__(self, name, building):
+        self.name = name
+        self.building = building
+
+    def __repr__(self):
+        return "{0},{1}".format(self.building.code, self.name)
+
+class Room(Base):
     """A Bathroom contains information about it that
     is non-subjective, such as toilet count and facilities"""
-    reviews = OneToMany('Review')
-    name = Field(Unicode(30))
-    gender = Field(Enum(u'Male', u'Female', u'Unisex'))
-    location = ManyToOne('Floor')
+    __tablename__ = 'rooms'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode)
+    #gender = Field(Enum(u'Male', u'Female', u'Unisex'))
+    floor_id = Column(Integer, ForeignKey(Floor.id))
+    location = relationship(Floor, backref='rooms')
     # Co-ord pair, WRT PDF floor plans, units etc TBD
-    mapx = Field(Integer)
-    mapy = Field(Integer)
+    mapx = Column(Integer)
+    mapy = Column(Integer)
 
     def __init__(self, name, gender, floor, x, y):
         self.name = name
@@ -40,27 +54,22 @@ class Room(Entity):
     def __repr__(self):
         return "{0} {1}".format(self.location.building.code, self.name)
 
-class Floor(Entity):
-    name = Field(Unicode(10))
-    building = ManyToOne('Building')
-    rooms = OneToMany('Room')
 
-    def __init__(self, name, building):
-        self.name = name
-        self.building = building
+class Review(Base):
+    """Reviews contain information from reviewers that may differ between reviews,
+    such as cleanliness and comfort
+    For now, a review is a specific room"""
+    __tablename__ = 'reviews'
+    id = Column(Integer, primary_key=True)
+    room_id = Column(Integer, ForeignKey(Room.id))
+    room = relationship(Room, backref='reviews')
+    description = Column(Unicode)
+    rank = Column(Integer)
 
-    def __repr__(self):
-        return "{0},{1}".format(self.building.code, self.name)
-
-class Building(Entity):
-    code = Field(Unicode(10), unique=True)
-    name = Field(Unicode(120), unique=True)
-    floors = OneToMany('Floor')
-
-    def __init__(self, code, name):
-        self.code = code
-        self.name = name
+    def __init__(self, room, description, rank):
+        self.room = room
+        self.description = description
+        self.rank = rank
 
     def __repr__(self):
-        return '{0} - {1}'.format(self.code, self.name)
-
+        return '<Review of {0}>'.format(self.room)
