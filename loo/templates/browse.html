@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div>
+  {% for floor in floors %}
+  <p>
+    <a href="/browse/{{floor.url}}">{{floor.name}}</a>
+  </p>
+  {%endfor %}
+</div>
+{% endblock %}

@@ -10,6 +10,13 @@ def home():
     R = S.query(models.Review).first()
     return flask.render_template('home.html', item=R)
 
+@app.route('/browse')
+def browse():
+    S = getsession()
+    floors = S.query(models.Floor).all()
+    foo = [{'name': str(x).replace(',', ' '), 'url': str(x).replace(',','/')} for x in floors]
+    return flask.render_template('browse.html', floors=foo)
+
 @app.route('/all')
 def listall():
     S = getsession()
@@ -30,9 +37,8 @@ def review():
 @app.route('/browse/<building>/<floor>')
 def showfloor(building, floor):
   S = getsession()
-  print floor
+  findfloor = S.query(models.Floor).filter(models.Floor.name == floor).join(models.Building).filter(models.Building.name == building).all()
   R = S.query(models.Room).join(models.Floor).filter(models.Floor.name == floor).all()
-  print R
   rooms = [{'name': str(x),'url': "/room/MC/" + x.name, 'mapY': x.mapy, 'mapX': x.mapx} for x in R]
   return flask.render_template('floor.html', rooms = rooms, imageurl ="http://csclub.uwaterloo.ca/~mimcpher/loo/maps/images/"+building+"/"+floor+".png")
 

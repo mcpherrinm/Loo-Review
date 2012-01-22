@@ -19,8 +19,8 @@ var setfloorpic = function(floor) {
    $('img#plan').click(function(event) {
      var x = $(this).offset().left;
      var y = $(this).offset().top;
-     var clickx = event.pageX - x;
-     var clicky = event.pageY - y;
+     var clickx = Math.floor(event.pageX - x);
+     var clicky = Math.floor(event.pageY - y);
      $('div#mapbox').css('display', 'block').css('left', clickx - 10);
      $('div#mapbox').css('display', 'block').css('top', clicky - 10);
      console.log(clickx + ", " + clicky);
@@ -55,7 +55,7 @@ var setfloorpic = function(floor) {
 </div>
 
     <form method="POST">
-        <p>{{form.building.label}}: {{form.building}}</p>
+     <!--   <p>{{form.building.label}}: {{form.building}}</p>-->
         <p>{{form.floor.label}}: {{form.floor}}</p>
         <p>{{form.name.label}}: {{form.name}}</p>
         <p>
